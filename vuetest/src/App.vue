@@ -16,14 +16,15 @@
 			let uName = window.localStorage.getItem("uName")
 			let uPassword = window.localStorage.getItem('uPassword')
 			let fromAdmin = window.localStorage.getItem("fromAdmin") 
+			let uId = window.localStorage.getItem("uId")
 			if (uName !== null && uPassword !== null) {
-				if (fromAdmin) {
-					this.$store.commit('setAll',{uName,uPassword,fromAdmin:true,isLogin:true})
+				if (fromAdmin == "true") {
+					this.$store.commit('setAll',{uName,uPassword,fromAdmin:true,isLogin:true, uId})
 				} else {
-					this.$store.commit('setAll',{uName,uPassword,fromAdmin:false,isLogin:true})
+					this.$store.commit('setAll',{uName,uPassword,fromAdmin:false,isLogin:true, uId})
 				}
 			} else {
-				this.$store.commit('setAll',{uName,uPassword,fromAdmin:false,isLogin:false})
+				this.$store.commit('setAll',{uName,uPassword,fromAdmin:false,isLogin:false, uId})
 			}
 		},
 	}

@@ -25,6 +25,7 @@ const router = new VueRouter({
                     component:Novels
                 }, 		
                 {				
+                    name: "show",
                     path:'show',				
                     component:Show,
                     props(route) {
@@ -45,7 +46,7 @@ const router = new VueRouter({
                         },
                         {
                             name:"category",
-                            path: "category/:currentPage/:pageSize",
+                            path: "category/:type/:currentPage/:pageSize",
                             component: Lists
                         },
                         {
@@ -64,7 +65,8 @@ const router = new VueRouter({
                     ]		
                 },
                 {
-                    path:"content",
+                    name: "content",
+                    path:"content/:author/:title",
                     component: Content
                 },
             ]	

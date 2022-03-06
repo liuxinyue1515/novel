@@ -1,17 +1,18 @@
 <template>
     <div class="paginate">
         <div class="bar">
-            <span>共 <i>724</i> 条</span>
+            <span>共 <i>{{total}}</i> 条</span>
             <ul class="pag">
                 <li><router-link :to="render(1)" class="no">首页</router-link></li>
                 <li v-if="curPage>1"><router-link :to="render(curPage-1)" class="no">上一页</router-link></li>
                 <li v-else><router-link :to="render(curPage)" class="no">上一页</router-link></li>
-                <li v-for="(value, index) in 6" :key="index">
-                    <router-link :to="render(totalPage-6+index)" v-if="totalPage-curPage <= 6">{{totalPage-6+index}}</router-link>
+                <li v-for="(value, index) in (totalPage>6 ? 6 : totalPage)" :key="index">
+                    <router-link :to="render(index+1)" v-if="totalPage <= 6">{{index+1}}</router-link>
+                    <router-link :to="render(totalPage-6+index)" v-else-if="totalPage-curPage <= 6">{{totalPage-6+index}}</router-link>
                     <router-link :to="render(curPage+index)" v-else-if="index===5">...</router-link>
                     <router-link :to="render(curPage+index)" v-else>{{curPage+index}}</router-link>
                 </li>
-                <li><router-link :to="render(totalPage)">{{totalPage}}</router-link></li>
+                <li v-if="totalPage > 6"><router-link :to="render(totalPage)">{{totalPage}}</router-link></li>
                 <li v-if="curPage<totalPage"><router-link :to="render(curPage+1)" class="no">下一页</router-link></li>
                 <li v-else><router-link :to="render(curPage)" class="no">下一页</router-link></li>
                 <li><router-link :to="render(totalPage)" class="no">尾页</router-link></li>
@@ -22,11 +23,11 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex'
     export default {
         name: "Paginate",
         data() {
             return {
-                totalPage:20,
                 toPage: ""
             }
         },
@@ -53,6 +54,9 @@
                     params:{			
                         currentPage,			
                         pageSize:9		
+                    },
+                    query: {
+                        kw: this.$route.query.kw
                     }
                 }
             }
@@ -62,6 +66,10 @@
                 type: Number,
                 default:1
             }
+        },
+        computed: {    
+            //借助mapState生成计算属性：totalPage（对象写法）    
+            ...mapState({totalPage:'totalPage',total:"total"}),             
         },
         mounted() {
             

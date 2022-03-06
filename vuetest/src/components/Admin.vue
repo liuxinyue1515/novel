@@ -9,14 +9,32 @@
                     <th>类别</th>
                     <th>操作</th>
                 </tr>
-                <tr v-for="(value, index) in 12" :key="index">
-                    <td>霸道仲裁爱上我</td>
-                    <td>王铁妞</td>
-                    <td>科幻</td>
+                <tr v-if="fileArr.length == 0">
+                    <td colspan="4">空</td>
+                </tr>
+                <tr v-else v-for="(obj) in fileArr" :key="obj.bid">
+                    <td>{{obj.bname}}</td>
+                    <td>{{obj.author}}</td>
+                    <td v-if="obj.tid == '1'">武侠</td>
+                    <td v-else-if="obj.tid == '2'">玄幻</td>
+                    <td v-else-if="obj.tid == '3'">爱情</td>
+                    <td v-else-if="obj.tid == '4'">都市</td>
+                    <td v-else-if="obj.tid == '5'">校园</td>
+                    <td v-else-if="obj.tid == '6'">其他</td>
                     <td>
-                        <router-link to="/content" class="detail">详情</router-link>
-                        <a href="" class="agree">同意</a>
-                        <a href="" class="delete">删除</a>
+                        <router-link :to="{
+                            name: 'content', 
+                            query: {
+                                bid: obj.bid,
+                                novelPath: textPath+obj.textPath,
+                            },
+                            params: {
+                                author: obj.author,
+                                title: obj.bname
+                            }
+                        }" class="detail">详情</router-link>
+                        <a class="agree" @click="agree(obj.bid)">同意</a>
+                        <a class="delete" @click="remove(obj.bid)" >删除</a>
                     </td>
                 </tr>
             </table>
@@ -25,8 +43,59 @@
 </template>
 
 <script>
+    import axios from 'axios'
     export default {
         name: "Admin",
+        data() {
+            return {
+                fileArr: [],
+                imgPath: "http://101.43.56.126/imgback/",
+                textPath: "http://101.43.56.126/text/"
+            }
+        },
+        methods: {
+            agree(id) {
+                axios.defaults.baseURL = 'http://101.43.56.126:8181';
+                axios.post(`/books/pass/${id}`)
+                axios.get("/books/unPassed/1/9").then(
+                    response => {
+                        if (response.data.code >= 200 && response.data.code < 300) {
+                            this.fileArr = response.data.message.records
+                        }
+                    },
+                    error => {
+                        alert(error.message)
+                    }
+                )
+            },
+            remove(id) {
+                axios.defaults.baseURL = 'http://101.43.56.126:8181';
+                axios.delete(`/books/${id}`)
+                axios.get("/books/unPassed/1/9").then(
+                    response => {
+                        if (response.data.code >= 200 && response.data.code < 300) {
+                            this.fileArr = response.data.message.records
+                        }
+                    },
+                    error => {
+                        alert(error.message)
+                    }
+                )              
+            }
+        },
+        mounted () {
+            axios.defaults.baseURL = 'http://101.43.56.126:8181';
+            axios.get("/books/unPassed/1/9").then(
+                response => {
+                    if (response.data.code >= 200 && response.data.code < 300) {
+                        this.fileArr = response.data.message.records
+                    }
+                },
+                error => {
+                    alert(error.message)
+                }
+            )
+        },
     }
 </script>
 
@@ -78,6 +147,7 @@
         padding: 0 3px;
         color: #e6e6e6;
         width: 40px;
+        cursor: pointer;
     }
     td a:hover {
         color: rgb(82, 82, 122);

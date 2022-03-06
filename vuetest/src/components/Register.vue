@@ -10,7 +10,7 @@
             </div>
             <br>
             <div class="input-data">
-                <input type="text" id="uPassword" name="uPassword" v-model="uPassword" required autocomplete="off">
+                <input type="password" id="uPassword" name="uPassword" v-model="uPassword" required autocomplete="off">
                 <div class="underline"></div>
                 <label for="email">您的密码</label>
             </div>
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+    import axios from 'axios'
     import {mapState} from 'vuex'
     export default {
         name: "Register",
@@ -46,23 +47,23 @@
                     this.uName = ""
                     this.uPassword = ""
                     this.checkPassword = ""
-                    this.axios.post("http://101.43.56.126:8181/users/create",
-                        {
-                            "uName": uName,
-                            "uPassword": uPassword
-                        }
-                    ).then(
+                    let form = new FormData
+                    form.append('uName', uName)
+                    form.append('uPassword',uPassword)
+                    axios.defaults.baseURL = 'http://101.43.56.126:8181';
+                    axios.post("/users/create", form).then(
                         response => {
-                            console.log(response.data);
-                            this.$store.commit('setAll',{uName,uPassword,fromAdmin:false,isLogin:true})
-                            window.localStorage.setItem("uName", uName)
-                            window.localStorage.setItem("uPassword", uPassword)
-                            window.localStorage.setItem("fromAdmin", false)
-                            window.localStorage.setItem("isLogin", true)
-                            this.$router.back() // 后退
+                            if (response.data.code === 400) {
+                                alert(response.data.message)
+                            } else if (response.data.code >= 200 && response.data.code < 300) {
+                                alert("注册成功")
+                                this.$router.replace({
+                                    name: "login"
+                                })
+                            }
                         },
                         error => {
-                            console.log(error.message)
+                            alert(error.message)
                         }
                     )
                     return true

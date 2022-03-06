@@ -3,8 +3,8 @@
 	<div class="header">
 		<span>西二小说网站</span>
 		<form>
-			<input type="search" placeholder="小说搜索" name="search" class="search">
-			<router-link to='/show/search/1/9' class="btn">搜索</router-link>
+			<input type="search" placeholder="小说搜索" name="search" class="search" v-model="kw">
+			<a class="btn" @click="search">搜索</a>
 		</form>
 
 		<ul>
@@ -43,6 +43,11 @@
 	import {mapState} from 'vuex'
 	export default {
 		name: "Header",
+		data() {
+			return {
+				kw: "",
+			}
+		},
 		methods: {
 			back() {
 				if (window.confirm("您确定要退出嘛?"))
@@ -51,11 +56,19 @@
 					window.localStorage.removeItem('uPassword')
 					window.localStorage.removeItem('fromAdmin')
 					window.localStorage.removeItem('isLogin')
+					window.localStorage.removeItem('uId')
 			},
 			search() {
 				this.$router.push({	
-    				name:'search',	
-				})
+    				name:'search',
+					params: {
+						currentPage: 1,
+						pageSize: 9
+					},
+					query: {
+						kw: this.kw,
+					}
+				}).catch(()=>{});
 			}
 		},
 		computed: {    

@@ -7,49 +7,26 @@ Vue.use(Vuex)
 
 //准备actions——用于响应组件中的动作
 const actions = {
-	/* jia(context,value){
-		console.log('actions中的jia被调用了')
-		context.commit('JIA',value)
-	},
-	jian(context,value){
-		console.log('actions中的jian被调用了')
-		context.commit('JIAN',value)
-	}, */
-	// jiaOdd(context,value){
-	// 	console.log('actions中的jiaOdd被调用了')
-	// 	if(context.state.sum % 2){
-	// 		context.commit('JIA',value)
-	// 	}
-	// },
-	// jiaWait(context,value){
-	// 	console.log('actions中的jiaWait被调用了')
-	// 	setTimeout(()=>{
-	// 		context.commit('JIA',value)
-	// 	},500)
-	// }
 }
 //准备mutations——用于操作数据（state）
 const mutations = {
-    // setName(state, value) {
-    //     state.user.uName = value
-    // },
-    // setPassword(state, value) {
-    //     state.user.uPassword = value
-    // },
-    // setAdmin(state, value) {
-    //     state.user.fromAdmin = value
-    // },
-    // setLogin(state, value) {
-    //     state.user.isLogin = value
-    // },
     setAll(state,value) {
         state.user = value
     },
+    setPage(state, value) {
+        state.totalPage = value
+    },
+    setTotal(state, value) {
+        state.total = value
+    }
 }
+
 //准备state——用于存储数据
 const state = {
 	user:{
-    }
+    },
+    totalPage:9,
+    total:1
 }
 
 //创建并暴露store

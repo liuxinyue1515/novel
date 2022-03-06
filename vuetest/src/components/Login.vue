@@ -10,7 +10,7 @@
             </div>
             <br>
             <div class="input-data">
-                <input type="text" id="uPassword" name="uPassword" v-model="uPassword" required autocomplete="off">
+                <input type="password" id="uPassword" name="uPassword" v-model="uPassword" required autocomplete="off">
                 <div class="underline"></div>
                 <label for="email">您的密码</label>
             </div>
@@ -40,32 +40,34 @@
                     this.uName = ""
                     this.uPassword = ""
                     if (uName === "admin" && uPassword === "123456") {
-                        alert("登录成功")
-                        this.$store.commit('setAll',{uName,uPassword,fromAdmin:true,isLogin:true})
+                        this.$store.commit('setAll',{uName,uPassword,fromAdmin:true,isLogin:true, uId: 4})
                         window.localStorage.setItem("uName", uName)
                         window.localStorage.setItem("uPassword", uPassword)
                         window.localStorage.setItem("fromAdmin", true)
                         window.localStorage.setItem("isLogin", true)
+                        window.localStorage.setItem("uId", 4)
                         this.$router.back() // 后退
                     } else {
+                        let form = new FormData
+                        form.append('uName', uName)
+                        form.append('uPassword',uPassword)
                         axios.defaults.baseURL = 'http://101.43.56.126:8181';
-                        axios.post('/users/login',{
-                            params: {
-                                uName,
-                                uPassword
-                            }
-                        }).then(
+                        axios.post('/users/login',form).then(
                             response => {
-                                console.log(response.data);
-                                this.$store.commit('setAll',{uName,uPassword,fromAdmin:false,isLogin:true})
-                                window.localStorage.setItem("uName", uName)
-                                window.localStorage.setItem("uPassword", uPassword)
-                                window.localStorage.setItem("fromAdmin", false)
-                                window.localStorage.setItem("isLogin", true)
-                                this.$router.back() // 后退
+                                if (response.data.code === 400) {
+                                    alert(response.data.message)
+                                } else if (response.data.code >= 200 && response.data.code < 300) {
+                                    this.$store.commit('setAll',{uName,uPassword,fromAdmin:false,isLogin:true, uId: response.data.id})
+                                    window.localStorage.setItem("uName", uName)
+                                    window.localStorage.setItem("uPassword", uPassword)
+                                    window.localStorage.setItem("fromAdmin", false)
+                                    window.localStorage.setItem("isLogin", true)
+                                    window.localStorage.setItem("uId", response.data.id)
+                                    this.$router.back() // 后退
+                                }
                             },
                             error => {
-                                console.log(error)
+                                alert(error.message)
                             }
                         )
                     }

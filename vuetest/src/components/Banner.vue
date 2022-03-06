@@ -2,20 +2,19 @@
 	<div class="banner">
 		<div>
 			<router-link active-class="active" to="/">首页</router-link>
-			<router-link active-class="active" to="/show/rank/1/9">排行榜</router-link>
+			<router-link active-class="active" to="/show/rank/1/9">收藏排行榜</router-link>
 			<router-link active-class="active" to="/show/recommend/1/9">推荐</router-link>
 			<el-dropdown class="drag">
   				<span class="el-dropdown-link">
     				分类<i class="el-icon-arrow-down el-icon--right"></i>
  				</span>
   				<el-dropdown-menu slot="dropdown">
-    				<router-link to="/show/category/1/9"><el-dropdown-item>玄幻小说</el-dropdown-item></router-link>
-					<router-link to="/show/category/1/9"><el-dropdown-item>修真小说</el-dropdown-item></router-link>
-					<router-link to="/show/category/1/9"><el-dropdown-item>都市小说</el-dropdown-item></router-link>
-					<router-link to="/show/category/1/9"><el-dropdown-item>穿越小说</el-dropdown-item></router-link>
-					<router-link to="/show/category/1/9"><el-dropdown-item>网游小说</el-dropdown-item></router-link>
-					<router-link to="/show/category/1/9"><el-dropdown-item>科幻小说</el-dropdown-item></router-link>
-					<router-link to="/show/category/1/9"><el-dropdown-item>其他小说</el-dropdown-item></router-link>
+    				<router-link to="/show/category/1/1/9"><el-dropdown-item>武侠小说</el-dropdown-item></router-link>
+					<router-link to="/show/category/2/1/9"><el-dropdown-item>玄幻小说</el-dropdown-item></router-link>
+					<router-link to="/show/category/3/1/9"><el-dropdown-item>爱情小说</el-dropdown-item></router-link>
+					<router-link to="/show/category/4/1/9"><el-dropdown-item>都市小说</el-dropdown-item></router-link>
+					<router-link to="/show/category/5/1/9"><el-dropdown-item>校园小说</el-dropdown-item></router-link>
+					<router-link to="/show/category/6/1/9"><el-dropdown-item>其他小说</el-dropdown-item></router-link>
   				</el-dropdown-menu>
 			</el-dropdown>
 		</div>

@@ -1,6 +1,6 @@
 <template>
     <div class="novel">
-        <router-link to="/content">
+        <router-link to="/content/admin/霸道仲裁?bid=1">
             <img src="../../assets/image/封面.jpg" alt="封面">
             <span class="name">霸道仲裁爱上我</span>
         </router-link>
@@ -8,8 +8,13 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex'
     export default {
         name: "Novel",
+        computed: {    
+            //借助mapState生成计算属性：user（对象写法）    
+            ...mapState({user:'user'}),             
+        },
     }
 </script>
 
